@@ -1,0 +1,16 @@
+import pandas
+import requests
+from bs4 import BeautifulSoup
+
+page = requests.get(
+    'https://uk.reuters.com/news/uk')
+soup = BeautifulSoup(page.content, 'html.parser')
+headlines = soup.find_all(class_='story-title')
+
+headline_text = [headline.get_text() for headline in headlines]
+
+headlines_table = pandas.DataFrame({
+    'Headlines': headline_text
+})
+
+headlines_table.to_csv('headlines.csv')
